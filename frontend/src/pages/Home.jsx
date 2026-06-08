@@ -12,7 +12,7 @@ function Home()
     ];
 
     const handleSearch = (e) => {
-        e.preventDefault(); // prevent the form from resetting the input 
+        e.preventDefault(); // Prevent the form from resetting the input 
         alert(searchQuery);
     }
 
@@ -23,15 +23,19 @@ function Home()
                     type="text"
                     placeholder="Search for movies..."
                     className="search-input"
-                    value={searchQuery} // controlled by state - input always shows whatever searchQuery is
-                    onChange={(e) => setSearchQuery(e.target.value)} // updates state on each keystroke so typing actually works
+                    value={searchQuery} // Controlled by state - input always shows whatever searchQuery is
+                    onChange={(e) => setSearchQuery(e.target.value)} // Updates state on each keystroke so typing actually works
                 />
                 <button type="submit" className="search-button">Search</button>
             </form>
 
             <div className="movies-grid">
-                {movies.map(movie => (
-                    <MovieCard movie={movie} key={movie.id} />
+                {movies.map(
+                (movie) => (
+                    // Only show movies that start with the searchQuery
+                    movie.title.toLowerCase().startsWith(searchQuery) && (
+                        <MovieCard movie={movie} key={movie.id} />
+                    )
                 ))}
             </div>
         </div>
