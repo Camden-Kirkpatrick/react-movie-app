@@ -31,9 +31,28 @@ function Home()
         loadPopularMovies();
     }, []);
 
-    const handleSearch = (e) => {
+    const handleSearch = async (e) => {
         e.preventDefault(); // Prevent the form from resetting the input 
-        alert(searchQuery);
+        if (!searchQuery.trim()) return; // Make sure the query is not empty
+        if (loading) return; // Can't search if we're already searching for something
+
+        setLoading(true);
+        try
+        {
+            const searchResults = await searchMovies(searchQuery)
+            setMovies(searchResults);
+            setError(null);
+        }
+        catch (err)
+        {
+            console.log(err);
+            setError("Failed to search movies...");
+        }
+        finally
+        {
+            setLoading(false);
+        }
+
     }
 
     return (
