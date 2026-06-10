@@ -9,9 +9,11 @@ import { MovieProvider } from "./contexts/MovieContext";
 function App()
 {
   return (
+    // Wrap everything that needs access to favorites; both pages and NavBar share the same state
     <MovieProvider>
       <NavBar />
       <main className="main-content">
+        {/* Routes swaps which page renders based on the URL */}
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/favorites" element={<Favorites />} />
