@@ -1,17 +1,23 @@
 import MovieCard from "../components/MovieCard";
 import {useState, useEffect} from "react";
+import { useLocation } from "react-router-dom";
 import { searchMovies, getPopularMovies } from "../services/api";
 import "../css/Home.css";
 
 function Home()
 {
+    const location = useLocation();
     const [searchQuery, setSearchQuery] = useState("");
     const [movies, setMovies] = useState([]);
     const [error, setError] = useState(null);
     const [loading, setLoading] = useState(true);
 
+    // Re-runs on every navigation to "/", including clicking Home while already here
     useEffect(() => {
         const loadPopularMovies = async () => {
+            setLoading(true);
+            setSearchQuery("");
+            setError(null);
             try
             {
                 const popularMovies = await getPopularMovies();
@@ -29,7 +35,7 @@ function Home()
         }
 
         loadPopularMovies();
-    }, []);
+    }, [location.key]);
 
     const handleSearch = async (e) => {
         e.preventDefault(); // Prevent the form from resetting the input 
@@ -37,6 +43,7 @@ function Home()
         if (loading) return; // Can't search if we're already searching for something
 
         setLoading(true);
+        
         try
         {
             const searchResults = await searchMovies(searchQuery)
